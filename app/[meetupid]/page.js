@@ -33,6 +33,8 @@ const details = ()=>{
       
     </Card>
     </div>
+
+
 }
 
 export default details;
