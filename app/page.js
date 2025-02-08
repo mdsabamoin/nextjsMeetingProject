@@ -1,17 +1,31 @@
-import MeetupList from "@/components/meetups/MeetupList";
+"use client";
 
+import { useState, useEffect } from "react";
+import axios from "axios";
+import MeetupList from "@/components/meetups/MeetupList"; // Ensure correct import
 
-function HomePage (){
-  const DUMMY_MEETUPS =[
-    {id:"m1",title:"My first meeting",image:"https://plus.unsplash.com/premium_photo-1661954654458-c673671d4a08?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmV3JTIweW9yayUyMGNpdHl8ZW58MHx8MHx8fDA%3D",address:"Verginia 408,Mango,Jamshedpur"},
-    {id:"m2",title:"My second meeting",image:"https://plus.unsplash.com/premium_photo-1661954654458-c673671d4a08?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmV3JTIweW9yayUyMGNpdHl8ZW58MHx8MHx8fDA%3D",address:"New York ,Manhattan"},
-    {id:"m3",title:"My third meeting",image:"https://plus.unsplash.com/premium_photo-1661954654458-c673671d4a08?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmV3JTIweW9yayUyMGNpdHl8ZW58MHx8MHx8fDA%3D",address:"Australia , 8984"},
-    {id:"m4",title:"My fourth meeting",image:"https://plus.unsplash.com/premium_photo-1661954654458-c673671d4a08?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmV3JTIweW9yayUyMGNpdHl8ZW58MHx8MHx8fDA%3D",address:"Washington DC,USA"},
-    {id:"m5",title:"My fifth meeting",image:"https://plus.unsplash.com/premium_photo-1661954654458-c673671d4a08?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmV3JTIweW9yayUyMGNpdHl8ZW58MHx8MHx8fDA%3D",address:"Turkey,Egypt"},
-  
-  ]
+function HomePage() {
+  const [meetups, setMeetups] = useState([]);
 
-  return <MeetupList  meetups={DUMMY_MEETUPS}/>
+  useEffect(() => {
+    async function fetchMeetups() {
+      try {
+        const response = await axios.get("/api/meetup");
+        setMeetups(response.data);
+      } catch (error) {
+        console.error("Error fetching meetups:", error);
+      }
+    }
+
+    fetchMeetups();
+  }, []);
+
+  return (
+    <div>
+      <h1>All Meetups</h1>
+      <MeetupList meetups={meetups} />
+    </div>
+  );
 }
 
 export default HomePage;

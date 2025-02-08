@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef } from 'react';
-
+import axios from "axios";
 import Card from '../ui/Card';
 import classes from './NewMeetupForm.module.css';
 
@@ -11,7 +11,7 @@ function NewMeetupForm(props) {
   const addressInputRef = useRef();
   const descriptionInputRef = useRef();
 
-  function submitHandler(event) {
+  async function submitHandler(event) {
     event.preventDefault();
 
     const enteredTitle = titleInputRef.current.value;
@@ -25,6 +25,20 @@ function NewMeetupForm(props) {
       address: enteredAddress,
       description: enteredDescription,
     };
+
+    try {
+      const response = await axios.post("/api/meetup", meetupData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 201) {
+        alert("Meetup added successfully!");
+      }
+    } catch (error) {
+      alert("Something went wrong!");
+    }
 
     props.onAddMeetup(meetupData);
   }
